@@ -14,24 +14,24 @@ public class Client implements Runnable {
     @Override
     public void run() {
         try {
-            Socket serverSocket = new Socket("localhost", 1234);
-            startClientToServerThread(serverSocket);
-            startServerToClientThread(serverSocket);
+            Socket connection = new Socket("localhost", 1234);
+            startClientOutputThread(connection);
+            startClientInputThread(connection);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    private void startClientToServerThread(Socket serverSocket) throws IOException {
-        PrintWriter serverOut = new PrintWriter(serverSocket.getOutputStream(), true);
+    private void startClientOutputThread(Socket connection) throws IOException {
+        PrintWriter serverOut = new PrintWriter(connection.getOutputStream(), true);
         Scanner consoleIn = new Scanner(System.in);
-        ClientTransmitterRunnable clientTransmitterRunnable = new ClientTransmitterRunnable(serverSocket, consoleIn, serverOut);
-        new Thread(clientTransmitterRunnable).start();
+        ClientOutputRunnable clientOutputRunnable = new ClientOutputRunnable(connection, consoleIn, serverOut);
+        new Thread(clientOutputRunnable).start();
     }
 
-    private void startServerToClientThread(Socket serverSocket) throws IOException {
-        Scanner serverIn = new Scanner(serverSocket.getInputStream());
-        ClientReceiverRunnable clientReceiverRunnable = new ClientReceiverRunnable(serverSocket, serverIn, System.out);
-        new Thread(clientReceiverRunnable).start();
+    private void startClientInputThread(Socket connection) throws IOException {
+        Scanner serverIn = new Scanner(connection.getInputStream());
+        ClientInputRunnable clientInputRunnable = new ClientInputRunnable(connection, serverIn, System.out);
+        new Thread(clientInputRunnable).start();
     }
 }

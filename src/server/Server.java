@@ -19,8 +19,8 @@ public class Server implements Runnable {
     public void run() {
         try {
             ServerSocket socket = new ServerSocket(1234);
-            Socket clientSocket = waitForConnection(socket);
-            createServerToClientThread(clientSocket);
+            Socket connection = waitForConnection(socket);
+            createServerIOHandlerThread(connection);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -28,17 +28,17 @@ public class Server implements Runnable {
 
     private Socket waitForConnection(ServerSocket socket) throws IOException {
         System.out.println("waiting for a client");
-        Socket clientSocket = socket.accept();
+        Socket connection = socket.accept();
         System.out.println("socket started");
-        return clientSocket;
+        return connection;
     }
 
-    private void createServerToClientThread(Socket clientSocket) throws IOException {
-        Scanner in = new Scanner(clientSocket.getInputStream());
-        PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
-        out.println("connected to the server\n");
-        TextualInterface textualInterface = new TextualInterfaceImpl(in, out);
-        ServerTransmitterRunnable serverTransmitterRunnable = new ServerTransmitterRunnable(clientSocket, textualInterface, out);
-        new Thread(serverTransmitterRunnable).start();
+    private void createServerIOHandlerThread(Socket connection) throws IOException {
+        Scanner clientIn = new Scanner(connection.getInputStream());
+        PrintWriter clientOut = new PrintWriter(connection.getOutputStream(), true);
+        clientOut.println("connected to the server\n");
+        TextualInterface textualInterface = new TextualInterfaceImpl(clientIn, clientOut);
+        ServerIOHandler serverIOHandler = new ServerIOHandler(connection, textualInterface, clientOut);
+        new Thread(serverIOHandler).start();
     }
 }

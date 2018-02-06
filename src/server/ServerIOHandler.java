@@ -5,15 +5,14 @@ import textualinterface.responses.Response;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.net.ServerSocket;
 import java.net.Socket;
 
-public class ServerTransmitterRunnable implements Runnable {
+public class ServerIOHandler implements Runnable {
     private final Socket clientSocket;
     private final TextualInterface textualInterface;
     private final PrintWriter out;
 
-    public ServerTransmitterRunnable(Socket clientSocket, TextualInterface textualInterface, PrintWriter out) {
+    public ServerIOHandler(Socket clientSocket, TextualInterface textualInterface, PrintWriter out) {
         this.clientSocket = clientSocket;
         this.textualInterface = textualInterface;
         this.out = out;

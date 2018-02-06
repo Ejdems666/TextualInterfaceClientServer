@@ -2,7 +2,6 @@ package textualinterface;
 
 import textualinterface.responses.*;
 
-import java.io.PrintStream;
 import java.io.PrintWriter;
 import java.util.Scanner;
 import java.util.regex.Matcher;
@@ -88,7 +87,7 @@ public class TextualInterfaceImpl implements TextualInterface {
             if (number >= min && number <= max) {
                 return new IntegerResponse(number);
             }
-            out.println("The number is not between " + min + " and " + max+"!\n");
+            out.println("The number is not between " + min + " and " + max + "!\n");
         }
     }
 
@@ -110,7 +109,7 @@ public class TextualInterfaceImpl implements TextualInterface {
 
     private void checkIfChoiceIsValid(String[] options, int optionIndex) throws Exception {
         if (optionIndex < 0 || optionIndex >= options.length) {
-            throw new Exception("Option number: "+(optionIndex+1)+" is not one of the possible options!\n");
+            throw new Exception("Option number: " + (optionIndex + 1) + " is not one of the possible options!\n");
         }
     }
 
