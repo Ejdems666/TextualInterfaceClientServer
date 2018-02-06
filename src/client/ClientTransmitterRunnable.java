@@ -6,12 +6,12 @@ import java.net.Socket;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 
-public class ClientToServerRunnable implements Runnable {
+public class ClientTransmitterRunnable implements Runnable {
     private final Socket serverSocket;
     private final Scanner clientIn;
     private final PrintWriter serverOut;
 
-    public ClientToServerRunnable(Socket serverSocket, Scanner clientIn, PrintWriter serverOut) {
+    public ClientTransmitterRunnable(Socket serverSocket, Scanner clientIn, PrintWriter serverOut) {
         this.serverSocket = serverSocket;
         this.clientIn = clientIn;
         this.serverOut = serverOut;
@@ -25,7 +25,7 @@ public class ClientToServerRunnable implements Runnable {
                 serverOut.println(message);
             }
         } catch (NoSuchElementException e) {
-            System.out.println("--------------------------------\nServer closed the connection!");
+            System.out.println("Server closed the connection!");
         }
     }
 }

@@ -3,7 +3,6 @@ package client;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.Socket;
-import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 public class Client implements Runnable {
@@ -23,16 +22,16 @@ public class Client implements Runnable {
         }
     }
 
-    private void startServerToClientThread(Socket serverSocket) throws IOException {
-        Scanner serverIn = new Scanner(serverSocket.getInputStream());
-        ServerToClientRunnable serverToClientRunnable = new ServerToClientRunnable(serverSocket, serverIn, System.out);
-        new Thread(serverToClientRunnable).start();
-    }
-
     private void startClientToServerThread(Socket serverSocket) throws IOException {
         PrintWriter serverOut = new PrintWriter(serverSocket.getOutputStream(), true);
         Scanner consoleIn = new Scanner(System.in);
-        ClientToServerRunnable clientToServerRunnable = new ClientToServerRunnable(serverSocket, consoleIn, serverOut);
-        new Thread(clientToServerRunnable).start();
+        ClientTransmitterRunnable clientTransmitterRunnable = new ClientTransmitterRunnable(serverSocket, consoleIn, serverOut);
+        new Thread(clientTransmitterRunnable).start();
+    }
+
+    private void startServerToClientThread(Socket serverSocket) throws IOException {
+        Scanner serverIn = new Scanner(serverSocket.getInputStream());
+        ClientReceiverRunnable clientReceiverRunnable = new ClientReceiverRunnable(serverSocket, serverIn, System.out);
+        new Thread(clientReceiverRunnable).start();
     }
 }

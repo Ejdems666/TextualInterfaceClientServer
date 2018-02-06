@@ -8,12 +8,12 @@ import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-public class ServerToClientRunnable implements Runnable {
+public class ServerTransmitterRunnable implements Runnable {
     private final Socket clientSocket;
     private final TextualInterface textualInterface;
     private final PrintWriter out;
 
-    public ServerToClientRunnable(Socket clientSocket, TextualInterface textualInterface, PrintWriter out) {
+    public ServerTransmitterRunnable(Socket clientSocket, TextualInterface textualInterface, PrintWriter out) {
         this.clientSocket = clientSocket;
         this.textualInterface = textualInterface;
         this.out = out;
@@ -42,7 +42,6 @@ public class ServerToClientRunnable implements Runnable {
         String[] options = new String[]{"option1", "option2", "option3", "option4"};
         response = textualInterface.selectSingleOption("Select an option please: ", options);
         printResponse(response);
-
 
         response = textualInterface.selectMultipleOptions("Select some options please: ", options);
         printResponse(response);
